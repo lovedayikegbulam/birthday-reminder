@@ -1,14 +1,14 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import User from '../models/user.js';
+import CONFIG from "../config/config.js"
 
-dotenv.config();
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD
+        user: CONFIG.EMAIL,
+        pass: CONFIG.EMAIL_PASSWORD
     }
 });
 
@@ -24,7 +24,7 @@ export const sendBirthdayEmails = async () => {
 
         users.forEach(user => {
             const mailOptions = {
-                from: process.env.EMAIL,
+                from:CONFIG.EMAIL,
                 to: user.email,
                 subject: 'Happy Birthday!',
                 text: `Happy Birthday, ${user.username}! Wishing you a wonderful day!`

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { addUser } from '../services/userService';
 import DatePicker from './DatePicker';
+import { format } from 'date-fns';
 
 const Form = styled.form`
     max-width: 500px;
@@ -50,13 +51,17 @@ const UserForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const newUser = { username, email, dateOfBirth };
+            // Format date of birth to yyyy-mm-dd
+            const formattedDate = dateOfBirth ? format(dateOfBirth, 'yyyy-MM-dd') : null;
+            const newUser = { username, email, dateOfBirth: formattedDate };
+            console.log(newUser); // Debugging line
             await addUser(newUser);
             alert('User added successfully');
             setUsername('');
             setEmail('');
             setDateOfBirth(null);
         } catch (error) {
+            console.error('Error adding user:', error); // Debugging line
             alert('Error adding user');
         }
     };
