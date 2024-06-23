@@ -11,10 +11,27 @@ const app = express();
 const port = CONFIG.PORT || 5000;
 const localhost = CONFIG.LOCAL_HOST || "localhost";
 
-app.use(cors);
-
 connectToMongoDb();
 
+// List of allowed origins
+const allowedOrigins = ["http://localhost:5000", "http://localhost:3000"];
+
+// Configure CORS
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Check if the origin is in the allowedOrigins array
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 
