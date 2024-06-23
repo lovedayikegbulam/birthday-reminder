@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
 import User from '../models/user.js';
 import CONFIG from "../config/config.js"
-
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -12,33 +10,35 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-export const sendBirthdayEmails = async () => {
+const sendBirthdayEmails = async () => {
     try {
         const today = new Date();
+        const todayMonth = today.getMonth() + 1; // Months are zero-indexed
+        const todayDay = today.getDate();
+
         const users = await User.find({
-            dateOfBirth: {
-                $month: today.getMonth() + 1,
-                $day: today.getDate()
+            $expr: {
+                $and: [
+                    { $eq: [{ $month: '$dateOfBirth' }, todayMonth] },
+                    { $eq: [{ $dayOfMonth: '$dateOfBirth' }, todayDay] }
+                ]
             }
         });
 
-        users.forEach(user => {
+        for (const user of users) {
             const mailOptions = {
-                from:CONFIG.EMAIL,
+                from: process.env.EMAIL_USER,
                 to: user.email,
                 subject: 'Happy Birthday!',
-                text: `Happy Birthday, ${user.username}! Wishing you a wonderful day!`
+                text: `Dear ${user.username},\n\nWe wish you a very Happy Birthday!\n\nBest Regards,\nFoundeet`
             };
 
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(`Error sending email to ${user.email}: `, error);
-                } else {
-                    console.log(`Email sent to ${user.email}: `, info.response);
-                }
-            });
-        });
+            await transporter.sendMail(mailOptions);
+            console.log(`Birthday email sent to ${user.email}`);
+        }
     } catch (error) {
-        console.log('Error in sending birthday emails: ', error);
+        console.error('Error sending birthday emails:', error);
     }
 };
+
+export default sendBirthdayEmails;

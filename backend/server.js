@@ -5,8 +5,7 @@ import cron from "cron";
 import CONFIG from "./config/config.js";
 import connectToMongoDb from "./db/mongodb.js";
 import cors from "cors";
-import { sendBirthdayEmails } from "./services/emailService.js";
-
+import sendBirthdayEmails from './services/emailService.js';
 const app = express();
 const port = CONFIG.PORT || 5000;
 const localhost = CONFIG.LOCAL_HOST || "localhost";
