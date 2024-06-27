@@ -13,7 +13,7 @@ const localhost = CONFIG.LOCAL_HOST || "localhost";
 connectToMongoDb();
 
 // List of allowed origins
-const allowedOrigins = ["http://localhost:5000", "http://localhost:3000"];
+const allowedOrigins = ["https://birthday-reminder-daily.netlify.app"];
 
 // Configure CORS
 const corsOptions = {
