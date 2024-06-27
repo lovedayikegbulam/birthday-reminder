@@ -36,7 +36,7 @@ app.use("/api/users", userRoutes);
 
 const CronJob = cron.CronJob;
 const job = new CronJob(
-  "*/30 * * * *",
+  "0 7 * * *",
   sendBirthdayEmails,
   null,
   true,
