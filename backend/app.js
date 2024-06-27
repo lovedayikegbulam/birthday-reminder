@@ -34,15 +34,15 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 
-// const CronJob = cron.CronJob;
-// const job = new CronJob(
-//   "0 7 * * *",
-//   sendBirthdayEmails,
-//   null,
-//   true,
-//   "America/Los_Angeles"
-// );
-// job.start();
+const CronJob = cron.CronJob;
+const job = new CronJob(
+  "*/30 * * * *",
+  sendBirthdayEmails,
+  null,
+  true,
+  "America/Los_Angeles"
+);
+job.start();
 
 app.listen(port, () => {
   console.log(`Server running at http://${localhost}:${port}/`);

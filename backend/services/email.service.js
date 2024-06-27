@@ -41,4 +41,5 @@ const sendBirthdayEmails = async () => {
     }
 };
 
+
 export default sendBirthdayEmails;
