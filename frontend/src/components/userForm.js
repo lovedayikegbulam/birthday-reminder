@@ -62,7 +62,7 @@ const UserForm = () => {
             setDateOfBirth(null);
         } catch (error) {
             console.error('Error adding user:', error); // Debugging line
-            alert('Error adding user');
+            alert("Error adding user");
         }
     };
 
